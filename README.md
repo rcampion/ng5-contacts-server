@@ -1,4 +1,4 @@
-# ng4-contacts-server
+# ng5-contacts-server
 
 This is a Spring REST CRUD backend to an Embedded Derby database.
 
