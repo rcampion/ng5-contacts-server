@@ -15,14 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.rkc.zds.dto.ContactDto;
-//import com.rkc.zds.dto.GroupMemberDto;
-//import com.rkc.zds.dto.GroupMemberElementDto;
 import com.rkc.zds.repository.ContactRepository;
-//import com.rkc.zds.repository.GroupMemberRepository;
 import com.rkc.zds.service.ContactService;
-//import com.rkc.zds.service.GroupMemberService;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -30,12 +25,6 @@ public class ContactServiceImpl implements ContactService {
 
 	@Autowired
 	private ContactRepository contactRepo;
-	
-//	@Autowired	
-//	private GroupMemberRepository groupMemberRepo;
-
-//	@Autowired
-//	GroupMemberService groupMemberService;
 
 	@Override
 	public Page<ContactDto> findContacts(Pageable pageable) {
@@ -65,7 +54,7 @@ public class ContactServiceImpl implements ContactService {
 			size = 1;
 		}
 		
-		PageRequest pageRequest = new PageRequest(0, size);
+		PageRequest pageRequest = PageRequest.of(0, size);
 
 		PageImpl<ContactDto> page = new PageImpl<ContactDto>(filteredList, pageRequest, size);
 
@@ -83,7 +72,7 @@ public class ContactServiceImpl implements ContactService {
 	@Override
 	public Page<ContactDto> searchContacts(String name) {
 
-		final PageRequest pageRequest = new PageRequest(0, 10, sortByNameASC());
+		final PageRequest pageRequest = PageRequest.of(0, 10, sortByNameASC());
 
 		return contactRepo.findByLastNameIgnoreCaseLike(pageRequest, "%" + name + "%");
 	}

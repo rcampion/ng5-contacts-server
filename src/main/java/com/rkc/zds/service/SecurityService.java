@@ -7,7 +7,7 @@ import com.rkc.zds.config.security.hmac.HmacException;
 import com.rkc.zds.config.security.hmac.HmacSigner;
 import com.rkc.zds.config.security.hmac.HmacToken;
 import com.rkc.zds.config.security.hmac.HmacUtils;
-import com.rkc.zds.dto.LoginDTO;
+import com.rkc.zds.dto.LoginDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

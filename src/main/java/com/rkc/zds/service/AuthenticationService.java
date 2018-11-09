@@ -3,7 +3,7 @@ package com.rkc.zds.service;
 import com.rkc.zds.config.security.SecurityProperties;
 import com.rkc.zds.config.security.SecurityUser;
 import com.rkc.zds.config.security.hmac.*;
-import com.rkc.zds.dto.LoginDTO;
+import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 
 import com.rkc.zds.config.security.SecurityUtils;
@@ -36,7 +36,6 @@ import java.util.*;
 @Service
 public class AuthenticationService {
 
-	//public static final String JWT_APP_COOKIE = "hmac-app-jwt";
 	public static final String CSRF_CLAIM_HEADER = "X-HMAC-CSRF";
     public static final String ACCESS_TOKEN_COOKIE = "access_token";
 	public static final String JWT_CLAIM_LOGIN = "login";
@@ -44,7 +43,6 @@ public class AuthenticationService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-//    @Autowired
     private SecurityProperties securityProperties = SecurityProperties.getInstance();
 
 	@Autowired
@@ -67,8 +65,7 @@ public class AuthenticationService {
 	 * @return UserDTO instance
 	 * @throws HmacException
 	 */
-//	public UserDto authenticate(LoginDTO loginDTO, HttpServletResponse response) throws HmacException {
-	public UserDto authenticate(LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response) throws HmacException {
+	public UserDto authenticate(LoginDto loginDTO, HttpServletRequest request, HttpServletResponse response) throws HmacException {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 				loginDTO.getLogin(), loginDTO.getPassword());
 		Authentication authentication = null;

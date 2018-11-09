@@ -34,7 +34,7 @@ public class GroupServiceImpl implements GroupService {
 
 		int pageNumber = pageable.getPageNumber();
 
-		PageRequest request = new PageRequest(pageNumber, PAGE_SIZE, Sort.Direction.DESC, "groupName");
+		PageRequest request = PageRequest.of(pageNumber, PAGE_SIZE, Sort.Direction.DESC, "groupName");
 
 		return groupRepo.findAll(pageable);
 	}
@@ -52,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
 	public Page<GroupMemberDto> findGroupMembers(int id) {
 		GroupDto group = groupRepo.getOne(id);
 
-		final PageRequest pageRequest = new PageRequest(0, 10, sortByNameASC());
+		final PageRequest pageRequest = PageRequest.of(0, 10, sortByNameASC());
 
 		Page page = groupMemberRepo.findByGroupId(pageRequest, id );
 
@@ -62,7 +62,7 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Page<GroupDto> searchGroups(String name) {
 
-		final PageRequest pageRequest = new PageRequest(0, 10, sortByNameASC());
+		final PageRequest pageRequest = PageRequest.of(0, 10, sortByNameASC());
 
 		return groupRepo.findByGroupNameLike(pageRequest, "%" + name + "%");
 	}

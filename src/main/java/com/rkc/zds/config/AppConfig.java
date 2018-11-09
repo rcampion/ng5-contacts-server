@@ -6,7 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
-import org.hibernate.dialect.DerbyDialect;
+import org.hibernate.dialect.DerbyTenSevenDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +57,7 @@ public class AppConfig {
         factoryBean.setPackagesToScan("com.rkc.zds");
       
 		Properties jpaProperties = new Properties();
-		jpaProperties.put("hibernate.dialect", DerbyDialect.class.getName());
+		jpaProperties.put("hibernate.dialect", DerbyTenSevenDialect.class.getName());
 		jpaProperties.put("hibernate.show_sql", Boolean.TRUE.toString());
 		jpaProperties.put("hibernate.query.jpaql_strict_compliance", Boolean.FALSE.toString());
 		jpaProperties.put("hibernate.hbm2ddl.auto", "update");

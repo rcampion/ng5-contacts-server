@@ -32,9 +32,6 @@ import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.service.ContactService;
 
 @RestController
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequestMapping(value = "/api/contact")
 public class ContactController {
 
@@ -57,14 +54,7 @@ public class ContactController {
 		ResponseEntity<Page<ContactDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
 		return response;
 	}
-/*
-	@RequestMapping(value = "/group/{groupId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<ContactDto>> findFilteredContacts(@PathVariable int groupId, Pageable pageable, HttpServletRequest req) {
-		Page<ContactDto> page = contactService.findFilteredContacts(pageable, groupId);
-		ResponseEntity<Page<ContactDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
-		return response;
-	}
-*/	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ContactDto> getContact(@PathVariable int id, HttpServletRequest req) {
 		ContactDto contact = contactService.getContact(id);

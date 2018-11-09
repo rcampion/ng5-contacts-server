@@ -2,11 +2,7 @@ package com.rkc.zds.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-/**
- * Login DTP
- * Created by Michael DESIGAUD on 14/02/2016.
- */
-public class LoginDTO {
+public class LoginDto {
 
     @NotEmpty
     private String login;

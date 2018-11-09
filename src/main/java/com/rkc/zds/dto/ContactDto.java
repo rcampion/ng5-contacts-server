@@ -15,27 +15,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PCM_CONTACTS")
 public class ContactDto implements java.io.Serializable {
-/*
 	
-	private String name;
-	
-    public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-*/	
     private static final long serialVersionUID = -6809049173391335091L;
 	
 	@Id
 	@Column(name="CONTACT_ID", unique = true, nullable = false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-//	@JsonProperty("first_name")
 	private String firstName;
-//	@JsonProperty("last_name")
 	private String lastName;
 	private String title;
 	private String company;
@@ -57,9 +44,6 @@ public class ContactDto implements java.io.Serializable {
 		this.company = company;
 	}
 
-//	@Id
-
-//	@Column(name = "CONTACT_ID", unique = true, nullable = false)
 	public int getId() {
 		return this.id;
 	}

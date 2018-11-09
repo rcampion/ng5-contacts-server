@@ -23,7 +23,6 @@ import com.rkc.zds.dto.AuthorityDto;
 public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	// private UserDto userDao;
 	private UserService userService;
 
 	@Transactional(readOnly = true)

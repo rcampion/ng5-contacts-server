@@ -55,10 +55,6 @@ public class UserDto implements java.io.Serializable  {
 	@Column(name="LASTNAME")	
 	private String lastName;
 
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-//	@JoinColumn(name = "USERNAME")
-
     @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinColumn(name = "userName", referencedColumnName = "userName")
 	@ElementCollection(targetClass=AuthorityDto.class)
@@ -73,8 +69,6 @@ public class UserDto implements java.io.Serializable  {
     private String privateSecret;
 
     private Profile profile;
-    
-//	private List<String> authorities;
     
     public UserDto() {
     }

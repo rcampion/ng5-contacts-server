@@ -23,12 +23,6 @@ import com.rkc.zds.config.security.hmac.HmacSecurityConfigurer;
 @Configuration
 @EnableWebSecurity
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-/*
-	<bean id="httpSessionSecurityContextRepository"
-		    class='org.springframework.security.web.context.HttpSessionSecurityContextRepository'>
-		    <property name='allowSessionCreation' value='false' />
-		</bean>
-*/
 
 	@Bean
 	public SecurityContextRepository securityContextRepository() {
@@ -57,10 +51,6 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain"))
 				.addMappingForUrlPatterns(null, false, "/*");
 
-		// servletContext.addFilter("securityContextPersistenceFilter", new
-		// FilterChainProxy())
-		// .addMappingForUrlPatterns(null, false, "/api/**");
-
 		servletContext.getServletRegistration("default").addMapping("/static/*", "*.html", "*.ico");
 
 		servletContext.addListener(HttpSessionEventPublisher.class);
@@ -69,7 +59,6 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		// return new Class[] { HibernateConfig.class };
 		return null;
 	}
 

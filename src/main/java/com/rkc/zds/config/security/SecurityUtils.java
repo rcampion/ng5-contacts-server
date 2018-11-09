@@ -11,7 +11,7 @@ import com.rkc.zds.config.security.hmac.HmacException;
 import com.rkc.zds.config.security.hmac.HmacSigner;
 import com.rkc.zds.config.security.hmac.HmacToken;
 import com.rkc.zds.config.security.hmac.HmacUtils;
-import com.rkc.zds.dto.LoginDTO;
+import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.service.AuthenticationService;
 import com.rkc.zds.service.SecurityService;
 
@@ -34,15 +34,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * Security utility class
- * Created by Michael DESIGAUD on 15/02/2016.
- */
 public class SecurityUtils {
 
     public static final String ENCODING_CLAIM_PROPERTY = "l-lev";
     
-	// @Autowired
 	private static SecurityProperties securityProperties = SecurityProperties.getInstance();
 
 	@Autowired
@@ -268,7 +263,7 @@ public class SecurityUtils {
     	//cannot set a cookie on localhost so create one if testing
 		if(TESTING == true) {
 			String jwtSecret = securityProperties.getJwt().getSecret();	
-			LoginDTO loginDTO = new LoginDTO();
+			LoginDto loginDTO = new LoginDto();
 			loginDTO.setLogin("richard.campion");
 			// Create Hmac signed token
 			String csrfId = UUID.randomUUID().toString();
@@ -301,7 +296,7 @@ public class SecurityUtils {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String login = auth.getName();
 		
-        LoginDTO loginDTO = new LoginDTO();
+        LoginDto loginDTO = new LoginDto();
 		loginDTO.setLogin(login);
 		String csrfId = UUID.randomUUID().toString();
 		Map<String, String> customClaims = new HashMap<>();

@@ -30,9 +30,6 @@ public class XAuthTokenFilter extends GenericFilterBean{
 
     private AuthenticationService authenticationService;
 
-//    public XAuthTokenFilter(AuthenticationService authenticationService){
-//       this.authenticationService = authenticationService;
-//    }
     XAuthTokenFilter(SecurityService securityService){
         this.securityService = securityService;
      }

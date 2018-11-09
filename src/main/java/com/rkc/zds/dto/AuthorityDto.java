@@ -18,12 +18,10 @@ import javax.persistence.UniqueConstraint;
  * 
  */
 @Entity
-//@Table(name="PCM_AUTHORITIES")
 @Table(name = "PCM_AUTHORITIES", catalog = "pcm", uniqueConstraints = @UniqueConstraint(columnNames = { "AUTHORITY", "USERNAME" }))
 public class AuthorityDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-//	@ManyToOne(fetch = FetchType.LAZY)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private UserDto user;
 

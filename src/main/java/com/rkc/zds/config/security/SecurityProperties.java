@@ -1,12 +1,5 @@
 package com.rkc.zds.config.security;
 
-//import org.springframework.boot.context.properties.ConfigurationProperties;
-
-/**
- * Security properties
- * Created by michael on 21/06/17.
- */
-//@ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
 
 	private static SecurityProperties INSTANCE = new SecurityProperties();

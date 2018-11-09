@@ -58,15 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/api/logout").antMatchers("/scripts/**/*.{js}").antMatchers("/node_modules/**")
 				.antMatchers("/assets/**").antMatchers("*.{ico}").antMatchers("/views/**/*.{html}");
-
-		// .antMatchers("/app/**/*.{html}");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-//		HttpSessionSecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
-
-//		http.securityContext().securityContextRepository(securityContextRepository);
 
         http
         .authorizeRequests()
@@ -90,8 +85,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .apply(authTokenConfigurer())
         .and()
             .apply(hmacSecurityConfigurer());
-//        .and().exceptionHandling().accessDeniedPage("/Access_Denied");
-
 	}
 
 	@Bean

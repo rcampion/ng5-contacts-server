@@ -16,9 +16,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    /* (non-Javadoc)
-	 * @see com.rkc.zds.service.impl.UserService#findByUserName(java.lang.String)
-	 */
     @Override
 	public UserDto findByUserName(String userName){
         return userRepository.findByUserName(userName);
@@ -26,13 +23,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto findById(Integer id) {
-		// TODO Auto-generated method stub
 		return userRepository.getOne(id);
 	}
 
 	@Override
 	public List<UserDto> getUsers() {
-		// TODO Auto-generated method stub
 		return userRepository.findAll();
 	}
 

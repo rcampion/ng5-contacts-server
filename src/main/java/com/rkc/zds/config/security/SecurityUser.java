@@ -9,6 +9,8 @@ import com.rkc.zds.dto.Profile;
 
 public class SecurityUser extends User{
 
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 
     private Profile profile;

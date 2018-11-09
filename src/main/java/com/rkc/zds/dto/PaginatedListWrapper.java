@@ -11,7 +11,10 @@ import java.util.List;
  */
 @XmlRootElement
 public class PaginatedListWrapper implements Serializable {
-    private Integer currentPage;
+
+	private static final long serialVersionUID = 1L;
+	
+	private Integer currentPage;
     private Integer pageSize;
     private Integer totalResults;
 

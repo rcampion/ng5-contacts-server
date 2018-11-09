@@ -19,10 +19,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-// @EnableSpringDataWebSupport
-// @EnableGlobalMethodSecurity(securedEnabled = true)
 @ComponentScan(basePackages = { "com.rkc.zds" })
-// @ComponentScan
 public class WebAppConfig implements WebMvcConfigurer {
 
 	@Bean

@@ -13,7 +13,5 @@ import com.rkc.zds.dto.ContactDto;
 public interface ContactRepository extends JpaRepository<ContactDto, Integer> {
   
 	Page<ContactDto> findByLastNameIgnoreCaseLike(Pageable pageable, String lastName);
-	
-	//ContactDto findById(Integer id);
-    
+	 
 }
