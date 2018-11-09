@@ -16,7 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.GroupMemberDto;
 import com.rkc.zds.repository.ContactRepository;
+import com.rkc.zds.repository.GroupMemberRepository;
 import com.rkc.zds.service.ContactService;
 
 @Service
@@ -26,6 +28,9 @@ public class ContactServiceImpl implements ContactService {
 	@Autowired
 	private ContactRepository contactRepo;
 
+	@Autowired
+	private GroupMemberRepository groupMemberRepo;
+	
 	@Override
 	public Page<ContactDto> findContacts(Pageable pageable) {
 
@@ -36,10 +41,19 @@ public class ContactServiceImpl implements ContactService {
 	public Page<ContactDto> findFilteredContacts(Pageable pageable, int groupId) {
 
 		List<ContactDto> contacts = contactRepo.findAll();
+
+		List<GroupMemberDto> memberList = groupMemberRepo.findByGroupId(groupId);
 		
 		List<ContactDto> testList = new ArrayList<ContactDto>();
 
 		List<ContactDto> filteredList = new ArrayList<ContactDto>();
+
+		// build member list of Contacts
+		Optional<ContactDto> contact;
+		for (GroupMemberDto element : memberList) {
+			contact= contactRepo.findById(element.getContactId());
+			testList.add(contact.get());
+		}
 
 		// check member list of Contacts
 		for (ContactDto element : contacts) {
