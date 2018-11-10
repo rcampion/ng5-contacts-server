@@ -1,5 +1,7 @@
 package com.rkc.zds.config.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.rkc.zds.config.security.hmac.HmacRequester;
 import com.rkc.zds.config.security.hmac.HmacSecurityConfigurer;
 import com.rkc.zds.service.AuthenticationService;
 import com.rkc.zds.service.SecurityService;
+import com.rkc.zds.config.security.XAuthTokenConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -63,30 +69,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-        http
-        .authorizeRequests()
-        .antMatchers("/api/authenticate").anonymous()
-        .antMatchers("/").anonymous()
-        .antMatchers("/favicon.ico").anonymous()
-        .antMatchers("/api/logout").anonymous()
-        .antMatchers("/api/**").authenticated()
-        .and()
-        .csrf()
-            .disable()
-            .headers()
-            .frameOptions().disable()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .logout()
-            .permitAll()
-        .and()
-            .apply(authTokenConfigurer())
-        .and()
-            .apply(hmacSecurityConfigurer());
+		//http.cors();
+		
+		http.authorizeRequests().antMatchers("/api/authenticate").anonymous().antMatchers("/").anonymous()
+				.antMatchers("/favicon.ico").anonymous().antMatchers("/api/logout").anonymous().antMatchers("/api/**")
+				.authenticated().and().csrf().disable().headers().frameOptions().disable().and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()
+				.apply(authTokenConfigurer()).and().apply(hmacSecurityConfigurer());
 	}
-
+/*
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+*/
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
