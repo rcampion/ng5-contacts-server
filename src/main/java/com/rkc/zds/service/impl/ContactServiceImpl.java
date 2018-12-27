@@ -79,8 +79,10 @@ public class ContactServiceImpl implements ContactService {
 	public ContactDto getContact(int id) {
 	
 		Optional<ContactDto> contact = contactRepo.findById(id);
-		
-		return contact.get();
+		if(contact.isPresent())
+			return contact.get();
+		else
+			return null;
 	}
 
 	@Override
