@@ -31,8 +31,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.EMailDto;
+import com.rkc.zds.dto.PhoneDto;
 import com.rkc.zds.service.ContactService;
 import com.rkc.zds.service.EMailService;
+import com.rkc.zds.service.PhoneService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -48,6 +50,9 @@ public class ContactController {
 
 	@Autowired
 	EMailService emailService;
+	
+	@Autowired
+	PhoneService phoneService;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -134,7 +139,74 @@ public class ContactController {
 		emailService.updateEMail(email);
 
 	}
+
+	@RequestMapping(value = "/phone/{contactId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<PhoneDto>> findPhones(@PathVariable int contactId, Pageable pageable, HttpServletRequest req) {
+		Page<PhoneDto> page = phoneService.findPhones(pageable, contactId);
+		ResponseEntity<Page<PhoneDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
+		return response;
+	}
 	
+	@RequestMapping(value = "/phone/phone/{phoneId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<PhoneDto>  getPhone(@PathVariable int phoneId) {
+		PhoneDto phone = phoneService.getPhone(phoneId);
+		return new ResponseEntity<>(phone, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/phone/phone", method = RequestMethod.POST, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void createPhone(@RequestBody String jsonString) {
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		PhoneDto phoneDTO = new PhoneDto();
+		try {
+			phoneDTO = mapper.readValue(jsonString, PhoneDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		phoneService.savePhone(phoneDTO);
+	}
+	
+	@RequestMapping(value = "/phone/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deletePhone(@PathVariable int id) {
+		phoneService.deletePhone(id);
+		return Integer.toString(id);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/phone/phone", method = RequestMethod.PUT, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void updatePhone(@RequestBody String jsonString) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		PhoneDto phone = new PhoneDto();
+		try {
+			phone = mapper.readValue(jsonString, PhoneDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		phoneService.updatePhone(phone);
+
+	}
+		
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ContactDto> getContact(@PathVariable int id, HttpServletRequest req) {
 		ContactDto contact = contactService.getContact(id);
