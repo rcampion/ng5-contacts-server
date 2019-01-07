@@ -89,9 +89,9 @@ public class ContactController {
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		EMailDto contactDTO = new EMailDto();
+		EMailDto emailDTO = new EMailDto();
 		try {
-			contactDTO = mapper.readValue(jsonString, EMailDto.class);
+			emailDTO = mapper.readValue(jsonString, EMailDto.class);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,7 +103,7 @@ public class ContactController {
 			e.printStackTrace();
 		}
 
-		emailService.saveEMail(contactDTO);
+		emailService.saveEMail(emailDTO);
 	}
 	@RequestMapping(value = "/email/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteEmail(@PathVariable int id) {
