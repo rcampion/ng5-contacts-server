@@ -30,7 +30,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.service.ContactService;
+import com.rkc.zds.service.EMailService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -44,6 +46,9 @@ public class ContactController {
 	@Autowired
 	ContactService contactService;
 
+	@Autowired
+	EMailService eMailService;
+	
 	@Autowired
 	private MessageSource messageSource;
 
@@ -62,6 +67,24 @@ public class ContactController {
 		Page<ContactDto> page = contactService.findFilteredContacts(pageable, groupId);
 		ResponseEntity<Page<ContactDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
 		return response;
+	}
+	
+	@RequestMapping(value = "/email/{contactId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<EMailDto>> findEMails(@PathVariable int contactId, Pageable pageable, HttpServletRequest req) {
+		Page<EMailDto> page = eMailService.findEMails(pageable, contactId);
+		ResponseEntity<Page<EMailDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
+		return response;
+	}
+	@RequestMapping(value = "/email/email/{emailId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<EMailDto>  getEmail(@PathVariable int emailId) {
+		EMailDto email = eMailService.getEMail(emailId);
+		return new ResponseEntity<>(email, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/email/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteEmail(@PathVariable int id) {
+		eMailService.deleteEMail(id);
+		return Integer.toString(id);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
