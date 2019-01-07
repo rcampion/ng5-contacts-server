@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.rkc.zds.dto.ContactDto;
@@ -27,13 +30,23 @@ public class EMailServiceImpl implements EMailService {
 	}
 
 	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void saveEMail(EMailDto email) {
-		// TODO Auto-generated method stub
 
+		eMailRepo.save(email);
 	}
+	
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void updateEMail(EMailDto email) {
 
+		eMailRepo.saveAndFlush(email);
+		
+	}
+	
 	@Override
 	public void deleteEMail(int id) {
+
 		eMailRepo.deleteById(id);
 
 	}

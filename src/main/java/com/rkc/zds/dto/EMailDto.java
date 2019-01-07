@@ -21,7 +21,7 @@ public class EMailDto implements Serializable {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private int emailId;
 
 	@Column(name="CONTACT_ID")
 	private int contactId;
@@ -32,12 +32,12 @@ public class EMailDto implements Serializable {
 	@Column(name="EMAILKIND")
 	private int emailKind;
 	
-    public int getId() {
-		return id;
+	public int getEmailId() {
+		return emailId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setEmailId(int emailId) {
+		this.emailId = emailId;
 	}
 
 	public int getContactId() {

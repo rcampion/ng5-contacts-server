@@ -14,7 +14,10 @@ public interface EMailService {
     EMailDto getEMail(int id);  
 
     @Transactional    
-    public void saveEMail(EMailDto email);    
+    public void saveEMail(EMailDto email);
+    
+    @Transactional    
+    public void updateEMail(EMailDto email);
 
     @Transactional  
 	void deleteEMail(int id);

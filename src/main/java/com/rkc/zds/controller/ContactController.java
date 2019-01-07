@@ -47,7 +47,7 @@ public class ContactController {
 	ContactService contactService;
 
 	@Autowired
-	EMailService eMailService;
+	EMailService emailService;
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -71,20 +71,68 @@ public class ContactController {
 	
 	@RequestMapping(value = "/email/{contactId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<EMailDto>> findEMails(@PathVariable int contactId, Pageable pageable, HttpServletRequest req) {
-		Page<EMailDto> page = eMailService.findEMails(pageable, contactId);
+		Page<EMailDto> page = emailService.findEMails(pageable, contactId);
 		ResponseEntity<Page<EMailDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
 		return response;
 	}
+	
 	@RequestMapping(value = "/email/email/{emailId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<EMailDto>  getEmail(@PathVariable int emailId) {
-		EMailDto email = eMailService.getEMail(emailId);
+		EMailDto email = emailService.getEMail(emailId);
 		return new ResponseEntity<>(email, HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/email/email", method = RequestMethod.POST, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void createEmail(@RequestBody String jsonString) {
 
+		ObjectMapper mapper = new ObjectMapper();
+
+		EMailDto contactDTO = new EMailDto();
+		try {
+			contactDTO = mapper.readValue(jsonString, EMailDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		emailService.saveEMail(contactDTO);
+	}
 	@RequestMapping(value = "/email/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteEmail(@PathVariable int id) {
-		eMailService.deleteEMail(id);
+		emailService.deleteEMail(id);
 		return Integer.toString(id);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/email/email", method = RequestMethod.PUT, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void updateEMail(@RequestBody String jsonString) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		EMailDto email = new EMailDto();
+		try {
+			email = mapper.readValue(jsonString, EMailDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		emailService.updateEMail(email);
+
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
