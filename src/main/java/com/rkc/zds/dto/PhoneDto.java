@@ -21,7 +21,7 @@ public class PhoneDto implements Serializable {
 	@Id
 	@Column(name="ID")
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int phoneId;
+	private Integer phoneId;
 
 	@Column(name="CONTACT_ID")
 	private int contactId;
@@ -32,11 +32,11 @@ public class PhoneDto implements Serializable {
 	@Column(name="PHONEKIND")
 	private int phoneKind;
 
-	public int getPhoneId() {
+	public Integer getPhoneId() {
 		return phoneId;
 	}
 
-	public void setPhoneId(int phoneId) {
+	public void setPhoneId(Integer phoneId) {
 		this.phoneId = phoneId;
 	}
 
