@@ -257,6 +257,9 @@ public class SecurityUtils {
     	   (request.getRemoteHost().equalsIgnoreCase("0:0:0:0:0:0:0:1"))) { 
     		TESTING=true;
     	}
+
+    	//force production
+    	TESTING = false;
     	
     	Cookie jwtCookie = null;
     	

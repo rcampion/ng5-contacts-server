@@ -36,7 +36,7 @@ import com.rkc.zds.service.ContactService;
 import com.rkc.zds.service.EMailService;
 import com.rkc.zds.service.PhoneService;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://www.zdslogic-development.com:4200")
 @RestController
 @RequestMapping(value = "/api/contact")
 public class ContactController {
