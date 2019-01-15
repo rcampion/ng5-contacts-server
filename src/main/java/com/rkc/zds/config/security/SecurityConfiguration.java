@@ -69,9 +69,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		//http.cors();
+		http.cors().and()
 		
-		http.authorizeRequests().antMatchers("/api/authenticate").anonymous().antMatchers("/").anonymous()
+		.authorizeRequests().antMatchers("/api/authenticate").anonymous().antMatchers("/").anonymous()
 				.antMatchers("/favicon.ico").anonymous().antMatchers("/api/logout").anonymous().antMatchers("/api/**")
 				.authenticated().and().csrf().disable().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()
@@ -99,7 +99,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	private XAuthTokenConfigurer authTokenConfigurer() {
-		return new XAuthTokenConfigurer(securityService);
+		return new XAuthTokenConfigurer(securityService, authenticationService);
 	}
 
 	private CsrfTokenRepository csrfTokenRepository() {

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,6 +65,7 @@ public class GroupController {
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void createGroup(@RequestBody String jsonString) {
 
@@ -86,6 +88,7 @@ public class GroupController {
 		groupService.saveGroup(groupDTO);
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "", method = RequestMethod.PUT, consumes = {
 			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
 	public void updateGroup(@RequestBody String jsonString) {
@@ -109,6 +112,7 @@ public class GroupController {
 
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteGroup(@PathVariable int id) {
 		groupService.deleteGroup(id);

@@ -28,10 +28,12 @@ public class XAuthTokenFilter extends GenericFilterBean{
 
     private SecurityService securityService;
 
+	// @Autowired
     private AuthenticationService authenticationService;
 
-    XAuthTokenFilter(SecurityService securityService){
+    XAuthTokenFilter(SecurityService securityService, AuthenticationService authenticationService){
         this.securityService = securityService;
+        this.authenticationService = authenticationService;
      }
     
     @Autowired
@@ -39,7 +41,7 @@ public class XAuthTokenFilter extends GenericFilterBean{
     
     @Autowired
     private UserService userService;
-
+/*
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
@@ -65,7 +67,7 @@ public class XAuthTokenFilter extends GenericFilterBean{
         }
 
     }
-/*    
+*/   
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
@@ -87,22 +89,23 @@ public class XAuthTokenFilter extends GenericFilterBean{
                 
                 //UserDto userDTO = userRepository.findByUserName(login);
                 //UserDto userDTO = this.userService.findByUserName(login);
-                UserDto userDTO = this.authenticationService.findByUserName(login);
+                UserDto userDTO = this.securityService.findByUserName(login);
                 
                 Assert.notNull(userDTO,"No user found with login: "+login);
 
-                Assert.isTrue(HmacSigner.verifyJWT(jwt,userDTO.getPrivateSecret()),"The Json Web Token is invalid");
+                //Assert.isTrue(HmacSigner.verifyJWT(jwt,userDTO.getPrivateSecret()),"The Json Web Token is invalid");
 
                 Assert.isTrue(!HmacSigner.isJwtExpired(jwt),"The Json Web Token is expired");
 
                 String csrfHeader = request.getHeader(AuthenticationService.CSRF_CLAIM_HEADER);
-                Assert.notNull(csrfHeader,"No csrf header found");
+                
+                //Assert.notNull(csrfHeader,"No csrf header found");
 
                 String jwtCsrf = HmacSigner.getJwtClaim(jwt, AuthenticationService.CSRF_CLAIM_HEADER);
                 Assert.notNull(jwtCsrf,"No csrf claim found in jwt");
 
                 //Check csrf token (prevent csrf attack)
-                Assert.isTrue(jwtCsrf.equals(csrfHeader));
+                // Assert.isTrue(jwtCsrf.equals(csrfHeader));
 
                 this.authenticationService.tokenAuthentication(login);
                 filterChain.doFilter(request,response);
@@ -112,5 +115,5 @@ public class XAuthTokenFilter extends GenericFilterBean{
             }
         }
 
-    }*/
+    }
 }

@@ -211,4 +211,5 @@ public class AuthenticationService {
 		UserDto userDTO = userService.findByUserName(login);
 		return userDTO;
 	}
+
 }

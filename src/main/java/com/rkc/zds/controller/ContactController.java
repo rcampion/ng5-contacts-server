@@ -110,6 +110,8 @@ public class ContactController {
 
 		emailService.saveEMail(emailDTO);
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/email/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteEmail(@PathVariable int id) {
 		emailService.deleteEMail(id);
@@ -177,6 +179,7 @@ public class ContactController {
 		phoneService.savePhone(phoneDTO);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")	
 	@RequestMapping(value = "/phone/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deletePhone(@PathVariable int id) {
 		phoneService.deletePhone(id);

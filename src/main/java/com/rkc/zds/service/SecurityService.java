@@ -8,6 +8,7 @@ import com.rkc.zds.config.security.hmac.HmacSigner;
 import com.rkc.zds.config.security.hmac.HmacToken;
 import com.rkc.zds.config.security.hmac.HmacUtils;
 import com.rkc.zds.dto.LoginDto;
+import com.rkc.zds.dto.UserDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class SecurityService {
 	public static final Integer JWT_TTL = 20;
 	private static final Logger logger = LoggerFactory.getLogger(SecurityService.class);
 
+    @Autowired
+    private UserService userService;
+    
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -176,5 +180,10 @@ public class SecurityService {
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(details,
 				details.getPassword(), details.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
+	}
+	
+	public UserDto findByUserName(String login) {
+		UserDto userDTO = userService.findByUserName(login);
+		return userDTO;
 	}
 }

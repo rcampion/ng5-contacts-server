@@ -5,6 +5,7 @@ import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ public class UsersController {
         return userService.findById(id);
     }
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
     public UserDto update(@RequestBody @Valid UserDto userDTO){
         userService.updateUser(userDTO);
