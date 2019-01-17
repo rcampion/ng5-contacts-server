@@ -74,7 +74,9 @@ public class XAuthTokenFilter extends GenericFilterBean{
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (!request.getRequestURI().contains("/api") || request.getRequestURI().contains("/api/authenticate")){
+        if (!request.getRequestURI().contains("/api") 
+        		|| request.getRequestURI().contains("/api/authenticate")
+        		|| request.getRequestURI().contains("/api/user/registration")){
             filterChain.doFilter(request, response);
         } else {
 

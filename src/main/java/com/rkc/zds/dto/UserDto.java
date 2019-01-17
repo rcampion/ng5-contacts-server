@@ -32,9 +32,9 @@ public class UserDto implements java.io.Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@Column(name="ID", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 
 	@Column(name="LOGIN")
     @NotEmpty
@@ -79,11 +79,11 @@ public class UserDto implements java.io.Serializable  {
 		this.enabled = enabled;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -180,4 +180,25 @@ public class UserDto implements java.io.Serializable  {
 		this.authorities = authorities;
 	}
 */
+	
+	@Override
+	public int hashCode() {
+	    int hash = 3;
+	    hash = 53 * hash + (this.id);
+	    return hash;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+	    boolean result;
+	    if((other == null) || (getClass() != other.getClass())){
+	        result = false;
+	    } // end if
+	    else{
+	        UserDto otherUser = (UserDto)other;
+	        result = (id == (otherUser.id));
+	    } // end else
+
+	    return result;
+	}
 }

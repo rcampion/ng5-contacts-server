@@ -71,7 +71,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		http.cors().and()
 		
-		.authorizeRequests().antMatchers("/api/authenticate").anonymous().antMatchers("/").anonymous()
+		.authorizeRequests()
+				.antMatchers("/api/authenticate").anonymous().antMatchers("/").anonymous()
+				.antMatchers("/api/user/registration").anonymous().antMatchers("/").anonymous()
 				.antMatchers("/favicon.ico").anonymous().antMatchers("/api/logout").anonymous().antMatchers("/api/**")
 				.authenticated().and().csrf().disable().headers().frameOptions().disable().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().logout().permitAll().and()

@@ -50,7 +50,9 @@ public class HmacSecurityFilter extends GenericFilterBean {
 
 		try {
 
-			if (!request.getRequestURI().contains("/api") || request.getRequestURI().contains("/api/authenticate")) {
+			if (!request.getRequestURI().contains("/api") 
+					|| request.getRequestURI().contains("/api/authenticate")
+					|| request.getRequestURI().contains("/api/user/registration")) {
 				filterChain.doFilter(wrappedRequest, response);
 			}
 			/*
@@ -59,8 +61,8 @@ public class HmacSecurityFilter extends GenericFilterBean {
 			 * filterChain.doFilter(wrappedRequest, response); } }
 			 */
 			else {
-				if(securityService.verifyJwt(wrappedRequest)) {			        
-			        filterChain.doFilter(wrappedRequest, response); 
+				if (securityService.verifyJwt(wrappedRequest)) {
+					filterChain.doFilter(wrappedRequest, response);
 				}
 			}
 		} catch (Exception e) {

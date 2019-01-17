@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.UserDto;
+import com.rkc.zds.error.UserAlreadyExistException;
 
 public interface UserService {
 
@@ -21,5 +21,7 @@ public interface UserService {
 
     @Transactional    
     public void saveUser(UserDto user);
+
+	UserDto registerNewUserAccount(UserDto accountDto) throws UserAlreadyExistException;
 
 }

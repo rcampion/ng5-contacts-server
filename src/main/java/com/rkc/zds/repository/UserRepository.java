@@ -8,4 +8,6 @@ import com.rkc.zds.dto.UserDto;
 
 public interface UserRepository extends JpaRepository<UserDto, Integer> {
 	UserDto findByUserName(String userName);
+
+	UserDto findByLogin(String login);
 }
