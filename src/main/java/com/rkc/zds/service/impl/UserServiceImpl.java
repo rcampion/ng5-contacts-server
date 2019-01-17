@@ -61,23 +61,17 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistException("There is an account with that username: " + accountDto.getLogin());
 		}
 		
-		//final User user = new User();
-
-		//user.setFirstName(accountDto.getFirstName());
-		//user.setLastName(accountDto.getLastName());
 		accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-		//user.setEmail(accountDto.getEmail());
-		//user.setUsing2FA(accountDto.isUsing2FA());
+		accountDto.setEnabled(1);
 		UserDto user = userRepository.save(accountDto);
 		
 		AuthorityDto role = new AuthorityDto();
-		role.setUsername(accountDto.getLogin());
+		role.setUserName(accountDto.getLogin());
 		role.setAuthority("ROLE_USER");
 		
 		authorityRepository.save(role);
 		
 		return user;
-
 
 	}
 

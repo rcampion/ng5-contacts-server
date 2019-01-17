@@ -22,6 +22,11 @@ import javax.persistence.UniqueConstraint;
 public class AuthorityDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name="ID", unique = true, nullable = false)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private UserDto user;
 
@@ -33,7 +38,6 @@ public class AuthorityDto implements Serializable {
         this.user = userDto;
     }
     
-	@Id
 	@Column(name="USERNAME")
 	@JoinColumn(name = "USERNAME", nullable = false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -50,11 +54,19 @@ public class AuthorityDto implements Serializable {
 		this.authority = role;
 	}
 	
-	public String getUsername() {
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getUserName() {
 		return this.userName;
 	}
 
-	public void setUsername(String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
