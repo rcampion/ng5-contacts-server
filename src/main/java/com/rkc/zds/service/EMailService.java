@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.EMailDto;
+import com.rkc.zds.model.EMailSend;
 
 public interface EMailService {
     Page<EMailDto> findEMails(Pageable pageable, int contactId);
@@ -21,4 +22,6 @@ public interface EMailService {
 
     @Transactional  
 	void deleteEMail(int id);
+
+	void sendEMail(EMailSend emailSend);
 }

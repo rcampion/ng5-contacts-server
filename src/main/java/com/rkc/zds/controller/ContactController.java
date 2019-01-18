@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.dto.PhoneDto;
+import com.rkc.zds.model.EMailSend;
 import com.rkc.zds.service.ContactService;
 import com.rkc.zds.service.EMailService;
 import com.rkc.zds.service.PhoneService;
@@ -142,6 +143,30 @@ public class ContactController {
 
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/email/send", method = RequestMethod.POST, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void sendEmail(@RequestBody String jsonString) {
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		EMailSend emailSend = new EMailSend();
+		try {
+			emailSend = mapper.readValue(jsonString, EMailSend.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		emailService.sendEMail(emailSend);
+	}
+	
 	@RequestMapping(value = "/phone/{contactId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<PhoneDto>> findPhones(@PathVariable int contactId, Pageable pageable, HttpServletRequest req) {
 		Page<PhoneDto> page = phoneService.findPhones(pageable, contactId);
