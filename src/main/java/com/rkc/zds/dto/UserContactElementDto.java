@@ -1,6 +1,6 @@
 package com.rkc.zds.dto;
 
-public class UserContactsElementDto {
+public class UserContactElementDto {
 	
 	private int id;
 	private int userId;

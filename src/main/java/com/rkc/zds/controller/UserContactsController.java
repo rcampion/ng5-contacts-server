@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rkc.zds.dto.ContactDto;
-import com.rkc.zds.dto.UserContactsDto;
-import com.rkc.zds.dto.UserContactsElementDto;
+import com.rkc.zds.dto.UserContactDto;
+import com.rkc.zds.dto.UserContactElementDto;
 import com.rkc.zds.service.ContactService;
 import com.rkc.zds.service.UserContactsService;
 
 @CrossOrigin(origins = "http://www.zdslogic-development.com:4200")
 @RestController
-@RequestMapping(value = "/api/user/contact")
+@RequestMapping(value = "/api/user/contacts")
 public class UserContactsController {
 
 	@Autowired
@@ -37,19 +37,19 @@ public class UserContactsController {
 	ContactService contactService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<UserContactsElementDto>> getUserContacts(@PathVariable int id, Pageable pageable,
+	public ResponseEntity<Page<UserContactElementDto>> getUserContacts(@PathVariable int id, Pageable pageable,
 			HttpServletRequest req) {
-		Page<UserContactsDto> userContactsPage = userContactsService.findUserContacts(pageable, id);
+		Page<UserContactDto> userContactsPage = userContactsService.findUserContacts(pageable, id);
 
-		List<UserContactsDto> contents = userContactsPage.getContent();
-		List<UserContactsElementDto> userContactsList = new ArrayList<UserContactsElementDto>();
+		List<UserContactDto> contents = userContactsPage.getContent();
+		List<UserContactElementDto> userContactsList = new ArrayList<UserContactElementDto>();
 
 		ContactDto contact;
-		for (UserContactsDto element : contents) {
+		for (UserContactDto element : contents) {
 			contact = contactService.getContact(element.getContactId());
 			//ignore contacts that may have been deleted
 			if (contact != null) {
-				UserContactsElementDto newElement = new UserContactsElementDto();
+				UserContactElementDto newElement = new UserContactElementDto();
 				newElement.setId(element.getId());
 				newElement.setUserId(element.getUserId());
 				newElement.setContactId(contact.getId());
@@ -67,15 +67,22 @@ public class UserContactsController {
 
 		PageRequest pageRequest = PageRequest.of(userContactsPage.getNumber(), userContactsPage.getSize());
 
-		PageImpl<UserContactsElementDto> page = new PageImpl<UserContactsElementDto>(userContactsList, pageRequest,
+		PageImpl<UserContactElementDto> page = new PageImpl<UserContactElementDto>(userContactsList, pageRequest,
 				userContactsPage.getTotalElements());
 
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
-
+	
+	@RequestMapping(value = "/filtered/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<ContactDto>> findFilteredContacts(@PathVariable int userId, Pageable pageable, HttpServletRequest req) {
+		Page<ContactDto> page = userContactsService.findFilteredContacts(pageable, userId);
+		ResponseEntity<Page<ContactDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
+		return response;
+	}
+	
 	@RequestMapping(value = "/{userId}/{contactId}", method = RequestMethod.POST)
 	public void createUserContact(@PathVariable int userId, @PathVariable int contactId) {
-		UserContactsDto userContact = new UserContactsDto();
+		UserContactDto userContact = new UserContactDto();
 		userContact.setUserId(userId);
 		userContact.setContactId(contactId);
 		userContactsService.saveUserContact(userContact);
