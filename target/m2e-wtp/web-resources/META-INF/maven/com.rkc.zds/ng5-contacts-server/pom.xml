@@ -20,6 +20,7 @@
 		<servlets.version>3.1.0</servlets.version>
 		<jsp.version>2.3.1</jsp.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<guava.version>27.0.1-jre</guava.version>
 	</properties>
 
 	<dependencies>
@@ -191,7 +192,14 @@
 			<artifactId>rsql-parser</artifactId>
 			<version>2.0.0</version>
 		</dependency>
+        <!-- util -->
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        
 	</dependencies>
 
 	<build>

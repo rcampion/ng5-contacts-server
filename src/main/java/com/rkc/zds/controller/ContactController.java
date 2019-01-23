@@ -243,6 +243,7 @@ public class ContactController {
 	
 	@RequestMapping(value = "/search/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<ContactDto>> searchContact(@PathVariable String name, Pageable pageRequest) {
+		
 		Page<ContactDto> page = contactService.searchContacts(name);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
