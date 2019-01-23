@@ -1,6 +1,10 @@
 package com.rkc.zds.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -33,9 +39,15 @@ import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.dto.PhoneDto;
 import com.rkc.zds.model.EMailSend;
+import com.rkc.zds.rsql.CustomRsqlVisitor;
 import com.rkc.zds.service.ContactService;
 import com.rkc.zds.service.EMailService;
 import com.rkc.zds.service.PhoneService;
+
+import com.rkc.zds.util.SearchCriteria;
+
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 
 @CrossOrigin(origins = "http://www.zdslogic-development.com:4200")
 @RestController
@@ -240,14 +252,38 @@ public class ContactController {
 		ContactDto contact = contactService.getContact(id);
 		return new ResponseEntity<>(contact, HttpStatus.OK);
 	}
-	
+/*	
 	@RequestMapping(value = "/search/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<ContactDto>> searchContact(@PathVariable String name, Pageable pageRequest) {
 		
 		Page<ContactDto> page = contactService.searchContacts(name);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
-
+*/
+	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<ContactDto>> findAllByRsql(Pageable pageable, @RequestParam(value = "search") String search) {
+	    Node rootNode = new RSQLParser().parse(search);
+	    Specification<ContactDto> spec = rootNode.accept(new CustomRsqlVisitor<ContactDto>());
+	    //return dao.findAll(spec);
+		Page<ContactDto> page = contactService.searchContacts(pageable, spec);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+/*
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+//    @ResponseBody
+	public ResponseEntity<Page<ContactDto>> findAll(@RequestParam(value = "search", required = false) String search) {
+        List<SearchCriteria> params = new ArrayList<SearchCriteria>();
+        if (search != null) {
+            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+            Matcher matcher = pattern.matcher(search + ",");
+            while (matcher.find()) {
+                params.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
+            }
+        }
+		Page<ContactDto> page = contactService.searchContacts(params);
+		return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+*/    
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = {
 			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })

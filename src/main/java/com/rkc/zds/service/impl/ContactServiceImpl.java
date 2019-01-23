@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +24,15 @@ import com.rkc.zds.dto.GroupMemberDto;
 import com.rkc.zds.repository.ContactRepository;
 import com.rkc.zds.repository.GroupMemberRepository;
 import com.rkc.zds.service.ContactService;
+import com.rkc.zds.util.SearchCriteria;
 
 @Service
 public class ContactServiceImpl implements ContactService {
 	private static final int PAGE_SIZE = 50;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
 	@Autowired
 	private ContactRepository contactRepo;
 
@@ -36,6 +44,8 @@ public class ContactServiceImpl implements ContactService {
 
 		return contactRepo.findAll(pageable);
 	}
+	
+
 
 	@Override
 	public Page<ContactDto> findFilteredContacts(Pageable pageable, int groupId) {
@@ -126,6 +136,19 @@ public class ContactServiceImpl implements ContactService {
 
 	private Sort sortByNameASC() {
 		return new Sort(Sort.Direction.ASC, "lastName");
+	}
+
+
+
+	@Override
+	public Page<ContactDto> searchContacts(Pageable pageable, List<SearchCriteria> params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page<ContactDto> searchContacts(Pageable pageable, Specification<ContactDto> spec) {
+		return contactRepo.findAll(spec, pageable );
 	}
 
 }
