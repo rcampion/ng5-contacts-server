@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,5 +97,10 @@ public class GroupServiceImpl implements GroupService {
 
 	private Sort sortByNameASC() {
 		return new Sort(Sort.Direction.ASC, "groupName");
+	}
+	
+	@Override
+	public Page<GroupDto> searchGroups(Pageable pageable, Specification<GroupDto> spec) {
+		return groupRepo.findAll(spec, pageable);
 	}
 }

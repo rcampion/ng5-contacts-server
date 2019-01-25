@@ -45,8 +45,6 @@ public class ContactServiceImpl implements ContactService {
 		return contactRepo.findAll(pageable);
 	}
 	
-
-
 	@Override
 	public Page<ContactDto> findFilteredContacts(Pageable pageable, int groupId) {
 
@@ -138,8 +136,6 @@ public class ContactServiceImpl implements ContactService {
 		return new Sort(Sort.Direction.ASC, "lastName");
 	}
 
-
-
 	@Override
 	public Page<ContactDto> searchContacts(Pageable pageable, List<SearchCriteria> params) {
 		// TODO Auto-generated method stub
@@ -148,7 +144,7 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public Page<ContactDto> searchContacts(Pageable pageable, Specification<ContactDto> spec) {
-		return contactRepo.findAll(spec, pageable );
+		return contactRepo.findAll(spec, pageable);
 	}
 
 }

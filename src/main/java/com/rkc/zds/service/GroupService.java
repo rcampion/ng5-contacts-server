@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rkc.zds.dto.GroupDto;
@@ -14,6 +15,8 @@ public interface GroupService {
     Page<GroupDto> findGroups(Pageable pageable);
 
     Page<GroupDto> searchGroups(String name);
+    
+	Page<GroupDto> searchGroups(Pageable pageable, Specification<GroupDto> spec);
 
     @Transactional     
     GroupDto getGroup(int id);    

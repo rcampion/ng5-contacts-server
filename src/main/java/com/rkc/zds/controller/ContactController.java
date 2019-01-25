@@ -252,14 +252,7 @@ public class ContactController {
 		ContactDto contact = contactService.getContact(id);
 		return new ResponseEntity<>(contact, HttpStatus.OK);
 	}
-/*	
-	@RequestMapping(value = "/search/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Page<ContactDto>> searchContact(@PathVariable String name, Pageable pageRequest) {
-		
-		Page<ContactDto> page = contactService.searchContacts(name);
-		return new ResponseEntity<>(page, HttpStatus.OK);
-	}
-*/
+
 	@RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<ContactDto>> findAllByRsql(Pageable pageable, @RequestParam(value = "search") String search) {
 	    Node rootNode = new RSQLParser().parse(search);
@@ -268,22 +261,7 @@ public class ContactController {
 		Page<ContactDto> page = contactService.searchContacts(pageable, spec);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
-/*
-    @RequestMapping(method = RequestMethod.GET, value = "/search")
-//    @ResponseBody
-	public ResponseEntity<Page<ContactDto>> findAll(@RequestParam(value = "search", required = false) String search) {
-        List<SearchCriteria> params = new ArrayList<SearchCriteria>();
-        if (search != null) {
-            Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-            Matcher matcher = pattern.matcher(search + ",");
-            while (matcher.find()) {
-                params.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
-            }
-        }
-		Page<ContactDto> page = contactService.searchContacts(params);
-		return new ResponseEntity<>(page, HttpStatus.OK);
-    }
-*/    
+    
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = {
 			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
