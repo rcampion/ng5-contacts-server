@@ -1,20 +1,30 @@
 package com.rkc.zds.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.GroupMemberDto;
+import com.rkc.zds.dto.UserContactDto;
+import com.rkc.zds.repository.ContactRepository;
 import com.rkc.zds.repository.GroupMemberRepository;
 import com.rkc.zds.service.GroupMemberService;
 
 @Service
 public class GroupMemberServiceImpl implements GroupMemberService {
 
+	@Autowired
+	private ContactRepository contactRepo;
+	
 	@Autowired
 	private GroupMemberRepository groupMemberRepo;
 
@@ -25,7 +35,45 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
 		return page;
 	}
+	
+	@Override
+	public Page<ContactDto> findFilteredContacts(Pageable pageable, int groupId) {
 
+		List<ContactDto> contacts = contactRepo.findAll();
+
+		List<GroupMemberDto> groupMemberList = groupMemberRepo.findByGroupId(groupId);
+		
+		List<ContactDto> testList = new ArrayList<ContactDto>();
+
+		List<ContactDto> filteredList = new ArrayList<ContactDto>();
+
+		// build member list of Contacts
+		Optional<ContactDto> contact;
+		for (GroupMemberDto element : groupMemberList) {
+			contact= contactRepo.findById(element.getContactId());
+			testList.add(contact.get());
+		}
+
+		// check member list of Contacts
+		for (ContactDto element : contacts) {
+			// if the contact is in the members list, ignore it
+			if (!testList.contains(element)) {
+				filteredList.add(element);
+			}
+		}
+
+		int size = filteredList.size();
+		if(size == 0) {
+			size = 1;
+		}
+		
+		PageRequest pageRequest = PageRequest.of(0, size);
+
+		PageImpl<ContactDto> page = new PageImpl<ContactDto>(filteredList, pageRequest, size);
+
+		return page;
+	}
+	
 	@Override
 	public List<GroupMemberDto> findAllMembers(int groupId) {
 
@@ -33,7 +81,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
 		return list;
 	}
-	
+
 	private Sort sortByIdASC() {
 		return new Sort(Sort.Direction.ASC, "groupId");
 	}
@@ -43,7 +91,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		// checking for duplicates
 		List<GroupMemberDto> list = groupMemberRepo.findByGroupId(groupMember.getGroupId());
 
-		//return if duplicate found
+		// return if duplicate found
 		for (GroupMemberDto element : list) {
 			if (element.getContactId() == groupMember.getContactId()) {
 				return;
@@ -57,6 +105,6 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 	public void deleteGroupMember(int id) {
 
 		groupMemberRepo.deleteById(id);
-		
-	}	
+
+	}
 }

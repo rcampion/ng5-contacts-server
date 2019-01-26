@@ -72,7 +72,14 @@ public class GroupMemberController {
 
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
-
+	
+	@RequestMapping(value = "/filtered/{groupId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<ContactDto>> findFilteredContacts(@PathVariable int groupId, Pageable pageable, HttpServletRequest req) {
+		Page<ContactDto> page = groupMemberService.findFilteredContacts(pageable, groupId);
+		ResponseEntity<Page<ContactDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
+		return response;
+	}
+	
 	@RequestMapping(value = "/{groupId}/{contactId}", method = RequestMethod.POST)
 	public void createGroupMember(@PathVariable int groupId, @PathVariable int contactId) {
 		GroupMemberDto groupMember = new GroupMemberDto();

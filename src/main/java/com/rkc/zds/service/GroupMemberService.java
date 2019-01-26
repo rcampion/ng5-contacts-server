@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.GroupMemberDto;
 
 public interface GroupMemberService {
@@ -13,6 +14,8 @@ public interface GroupMemberService {
     
     List<GroupMemberDto> findAllMembers(int groupId);
 
+    Page<ContactDto> findFilteredContacts(Pageable pageable, int groupId);  
+    
     @Transactional    
     public void saveGroupMember(GroupMemberDto groupMember);    
 

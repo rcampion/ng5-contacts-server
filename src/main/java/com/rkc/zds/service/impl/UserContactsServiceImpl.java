@@ -20,10 +20,10 @@ import com.rkc.zds.service.UserContactsService;
 
 @Service
 public class UserContactsServiceImpl implements UserContactsService {
-	
+
 	@Autowired
 	private ContactRepository contactRepo;
-	
+
 	@Autowired
 	private UserContactsRepository userContactsRepo;
 
@@ -42,14 +42,14 @@ public class UserContactsServiceImpl implements UserContactsService {
 
 		return list;
 	}
-	
+
 	@Override
 	public Page<ContactDto> findFilteredContacts(Pageable pageable, int userId) {
 
 		List<ContactDto> contacts = contactRepo.findAll();
 
 		List<UserContactDto> userContactsList = userContactsRepo.findByUserId(userId);
-		
+
 		List<ContactDto> testList = new ArrayList<ContactDto>();
 
 		List<ContactDto> filteredList = new ArrayList<ContactDto>();
@@ -57,7 +57,7 @@ public class UserContactsServiceImpl implements UserContactsService {
 		// build member list of Contacts
 		Optional<ContactDto> contact;
 		for (UserContactDto element : userContactsList) {
-			contact= contactRepo.findById(element.getContactId());
+			contact = contactRepo.findById(element.getContactId());
 			testList.add(contact.get());
 		}
 
@@ -70,17 +70,17 @@ public class UserContactsServiceImpl implements UserContactsService {
 		}
 
 		int size = filteredList.size();
-		if(size == 0) {
+		if (size == 0) {
 			size = 1;
 		}
-		
+
 		PageRequest pageRequest = PageRequest.of(0, size);
 
 		PageImpl<ContactDto> page = new PageImpl<ContactDto>(filteredList, pageRequest, size);
 
 		return page;
 	}
-	
+
 	private Sort sortByIdASC() {
 		return new Sort(Sort.Direction.ASC, "userId");
 	}
@@ -90,7 +90,7 @@ public class UserContactsServiceImpl implements UserContactsService {
 		// checking for duplicates
 		List<UserContactDto> list = userContactsRepo.findByUserId(userContact.getUserId());
 
-		//return if duplicate found
+		// return if duplicate found
 		for (UserContactDto element : list) {
 			if (element.getContactId() == userContact.getContactId()) {
 				return;
@@ -104,6 +104,6 @@ public class UserContactsServiceImpl implements UserContactsService {
 	public void deleteUserContact(int id) {
 
 		userContactsRepo.deleteById(id);
-		
-	}	
+
+	}
 }
