@@ -3,10 +3,14 @@ package com.rkc.zds.service.impl;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import com.rkc.zds.error.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +37,13 @@ public class UserServiceImpl implements UserService {
 	public UserDto findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
 	}
+	
+	@Override
+	public Page<UserDto> findUsers(Pageable pageable) {
 
+		return userRepository.findAll(pageable);
+	}
+	
 	@Override
 	public UserDto findById(Integer id) {
 		return userRepository.getOne(id);
@@ -43,7 +53,17 @@ public class UserServiceImpl implements UserService {
 	public List<UserDto> getUsers() {
 		return userRepository.findAll();
 	}
-
+	
+	@Override
+	public UserDto getUser(int id) {
+	
+		Optional<UserDto> user = userRepository.findById(id);
+		if(user.isPresent())
+			return user.get();
+		else
+			return null;
+	}
+	
 	@Override
 	public void updateUser(UserDto user) {
 		userRepository.saveAndFlush(user);
@@ -84,5 +104,10 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public Page<UserDto> searchUsers(Pageable pageable, Specification<UserDto> spec) {
+		return userRepository.findAll(spec, pageable);
 	}
 }
