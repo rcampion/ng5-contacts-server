@@ -45,7 +45,7 @@ public class UsersController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
 		return Integer.toString(id);
