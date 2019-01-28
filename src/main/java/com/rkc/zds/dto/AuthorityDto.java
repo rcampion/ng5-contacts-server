@@ -23,7 +23,7 @@ public class AuthorityDto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID", unique = true, nullable = false)
+	@Column(name="ID", unique = true)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
@@ -39,11 +39,10 @@ public class AuthorityDto implements Serializable {
     }
     
 	@Column(name="USERNAME")
-	@JoinColumn(name = "USERNAME", nullable = false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@JoinColumn(name = "USERNAME")
 	private String userName;
 
-	@Column(name = "AUTHORITY", nullable = false, length = 45)
+	@Column(name = "AUTHORITY", length = 45)
 	private String authority;
 
     public AuthorityDto() {

@@ -2,6 +2,7 @@ package com.rkc.zds.service.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,21 +34,21 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private AuthorityRepository authorityRepository;
-	
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDto findByUserName(String userName) {
 		return userRepository.findByUserName(userName);
 	}
-	
+
 	@Override
 	public Page<UserDto> findUsers(Pageable pageable) {
 
 		return userRepository.findAll(pageable);
 	}
-	
+
 	@Override
 	public UserDto findById(Integer id) {
 		return userRepository.getOne(id);
@@ -57,20 +58,20 @@ public class UserServiceImpl implements UserService {
 	public List<UserDto> getUsers() {
 		return userRepository.findAll();
 	}
-	
+
 	@Override
 	public UserDto getUser(int id) {
-	
+
 		Optional<UserDto> user = userRepository.findById(id);
-		if(user.isPresent())
+		if (user.isPresent())
 			return user.get();
 		else
 			return null;
 	}
-	
+
 	@Override
 	public void updateUser(UserDto user) {
-		
+
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		userRepository.saveAndFlush(user);
@@ -81,34 +82,52 @@ public class UserServiceImpl implements UserService {
 	public void saveUser(UserDto user) {
 		userRepository.save(user);
 	}
+
 	@Transactional
-	
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteUser(int id) {
+		
+		UserDto user = null;
+/*		
+		// delete authorities for this user
+		Optional<UserDto> userOptional = userRepository.findById(id);
 
-		// test
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (userOptional.isPresent()) {
+			user = userOptional.get();
+		}
+		
+		if (user != null) {
+			Set<AuthorityDto> userAuthorities = user.getAuthorities();
 
+			for (Iterator<AuthorityDto> iterator = userAuthorities.iterator(); iterator.hasNext();) {
+				AuthorityDto authority = iterator.next();
+				authorityRepository.deleteById(authority.getId());
+			}
+
+			userRepository.deleteById(id);
+		}
+*/
 		userRepository.deleteById(id);
 	}
-	
+
 	@Override
 	public UserDto registerNewUserAccount(final UserDto accountDto) {
 		if (loginExist(accountDto.getLogin())) {
 			throw new UserAlreadyExistException("There is an account with that username: " + accountDto.getLogin());
 		}
-		
+
 		accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
 		accountDto.setEnabled(1);
 		UserDto user = userRepository.save(accountDto);
-		
+
 		AuthorityDto role = new AuthorityDto();
 		role.setUserName(accountDto.getLogin());
 		role.setAuthority("ROLE_USER");
-		
+
 		authorityRepository.save(role);
-		
+
 		return user;
 
 	}
@@ -120,10 +139,10 @@ public class UserServiceImpl implements UserService {
 
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public Page<UserDto> searchUsers(Pageable pageable, Specification<UserDto> spec) {
 		return userRepository.findAll(spec, pageable);

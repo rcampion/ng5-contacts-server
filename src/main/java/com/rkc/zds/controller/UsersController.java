@@ -21,6 +21,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +57,30 @@ public class UsersController {
 	public String deleteUser(@PathVariable int id) {
 		userService.deleteUser(id);
 		return Integer.toString(id);
+	}
+
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void createUser(@RequestBody String jsonString) {
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		UserDto userDTO = new UserDto();
+		try {
+			userDTO = mapper.readValue(jsonString, UserDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		userService.saveUser(userDTO);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")

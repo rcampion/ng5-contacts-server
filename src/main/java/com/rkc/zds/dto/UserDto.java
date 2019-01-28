@@ -32,7 +32,7 @@ public class UserDto implements java.io.Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID", unique = true, nullable = false)
+	@Column(name="ID", unique = true)
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
@@ -55,7 +55,7 @@ public class UserDto implements java.io.Serializable  {
 	@Column(name="LASTNAME")	
 	private String lastName;
 
-    @OneToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "userName", referencedColumnName = "userName")
 	@ElementCollection(targetClass=AuthorityDto.class)
 	private Set<AuthorityDto> authorities = new HashSet<AuthorityDto>(0);
