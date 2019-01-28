@@ -1,6 +1,10 @@
 package com.rkc.zds.controller;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.GroupDto;
 import com.rkc.zds.dto.Profile;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.rsql.CustomRsqlVisitor;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +58,28 @@ public class UsersController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-    public UserDto update(@RequestBody @Valid UserDto userDTO){
-        userService.updateUser(userDTO);
-        return userDTO;
-    }
+	@RequestMapping(value = "/users", method = RequestMethod.PUT, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void updateUser(@RequestBody String jsonString) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		UserDto user = new UserDto();
+		try {
+			user = mapper.readValue(jsonString, UserDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		userService.updateUser(user);
+
+	}
 
     @RequestMapping("/users/profiles")
     public List<String> getProfiles(){
