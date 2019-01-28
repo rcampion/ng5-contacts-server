@@ -80,7 +80,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveUser(UserDto user) {
+				
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setEnabled(1);
+		
 		userRepository.save(user);
+/*		
+		AuthorityDto role = new AuthorityDto();
+		role.setUserName(user.getLogin());
+
+		Set<AuthorityDto> roles = user.getAuthorities();
+		
+		for (Iterator<AuthorityDto> iterator = roles.iterator(); iterator.hasNext();) {
+			AuthorityDto authority = iterator.next();
+			authorityRepository.save(role);
+		}
+*/
 	}
 
 	@Transactional

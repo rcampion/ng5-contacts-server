@@ -1,6 +1,8 @@
 package com.rkc.zds.dto;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -171,16 +173,43 @@ public class UserDto implements java.io.Serializable  {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
-/*
-    public List<String> getAuthorities() {
-		return authorities;
+
+    public List<String> getAuthoritiesList() {
+    	
+    	List<String> authoritiesList = new ArrayList<String>();
+    	
+		Set<AuthorityDto> roles = getAuthorities(); 
+		
+		for (Iterator<AuthorityDto> iterator = roles.iterator(); iterator.hasNext();) {
+			AuthorityDto authority = iterator.next();
+			authoritiesList.add(authority.toString());
+		}		
+		return authoritiesList;
 	}
 
-	public void setAuthorities(List<String> authorities) {
-		this.authorities = authorities;
-	}
-*/
+	public void setAuthoritiesList(List<String> authorities) {
+		
+		Set<AuthorityDto> roles = getAuthorities();
+		
+		AuthorityDto authority = null;
+		
+		for (Iterator<AuthorityDto> iterator = roles.iterator(); iterator.hasNext();) {
+			authority = iterator.next();
+		}	
+		
+		Set<AuthorityDto> set = new HashSet<AuthorityDto>();
 	
+		for(String element:authorities) {
+			AuthorityDto temp = new AuthorityDto();
+			if(authority!=null) temp.setId(authority.getId());
+			temp.setAuthority(element);
+			temp.setUserName(getUserName());
+			set.add(temp);
+		}
+		
+		this.authorities = set;
+	}
+
 	@Override
 	public int hashCode() {
 	    int hash = 3;

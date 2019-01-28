@@ -1,6 +1,7 @@
 package com.rkc.zds.controller;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
@@ -65,7 +66,7 @@ public class UsersController {
 	public void createUser(@RequestBody String jsonString) {
 
 		ObjectMapper mapper = new ObjectMapper();
-
+		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 		UserDto userDTO = new UserDto();
 		try {
 			userDTO = mapper.readValue(jsonString, UserDto.class);
@@ -79,7 +80,10 @@ public class UsersController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+        //hack
+        userDTO.setLogin(userDTO.getUserName());
+        
 		userService.saveUser(userDTO);
 	}
 	
@@ -88,6 +92,7 @@ public class UsersController {
 			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
 	public void updateUser(@RequestBody String jsonString) {
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
 		UserDto user = new UserDto();
 		try {
