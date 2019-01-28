@@ -25,7 +25,10 @@ public interface UserService {
 	
     @Transactional    
     public void updateUser(UserDto user);
-
+    
+    @Transactional  
+	void deleteUser(int id);
+    
     @Transactional    
     public void saveUser(UserDto user);
 

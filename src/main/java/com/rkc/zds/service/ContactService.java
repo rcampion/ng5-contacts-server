@@ -37,6 +37,4 @@ public interface ContactService {
     @Transactional  
 	void deleteContact(int id);
 
-
-
 }

@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.ContactDto;
@@ -74,7 +78,18 @@ public class UserServiceImpl implements UserService {
 	public void saveUser(UserDto user) {
 		userRepository.save(user);
 	}
+	@Transactional
+	
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void deleteUser(int id) {
 
+		// test
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		userRepository.deleteById(id);
+	}
+	
 	@Override
 	public UserDto registerNewUserAccount(final UserDto accountDto) {
 		if (loginExist(accountDto.getLogin())) {

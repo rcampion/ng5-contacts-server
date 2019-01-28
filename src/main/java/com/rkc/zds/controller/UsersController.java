@@ -45,6 +45,13 @@ public class UsersController {
 	}
 
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteUser(@PathVariable int id) {
+		userService.deleteUser(id);
+		return Integer.toString(id);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
     public UserDto update(@RequestBody @Valid UserDto userDTO){
         userService.updateUser(userDTO);
