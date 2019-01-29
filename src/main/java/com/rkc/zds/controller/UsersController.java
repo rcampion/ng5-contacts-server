@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.GroupDto;
 import com.rkc.zds.dto.LoginDto;
@@ -138,4 +139,12 @@ public class UsersController {
 		Page<UserDto> page = userService.searchUsers(pageable, spec);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/users/authorities", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Page<AuthorityDto>> findAllAuthorities(@RequestBody LoginDto loginDTO, Pageable pageable, HttpServletRequest req) {
+		Page<AuthorityDto> page = userService.findAuthorities(pageable, loginDTO.getLogin());
+		ResponseEntity<Page<AuthorityDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
+		return response;
+	}
+	
 }

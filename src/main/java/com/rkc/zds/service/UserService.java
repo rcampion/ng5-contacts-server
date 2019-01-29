@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.error.UserAlreadyExistException;
@@ -41,5 +41,7 @@ public interface UserService {
 	Page<UserDto> searchUsers(Pageable pageable, Specification<UserDto> spec);
 
 	UserDto changePassword(LoginDto loginDTO, HttpServletRequest request, HttpServletResponse response);
+
+	Page<AuthorityDto> findAuthorities(Pageable pageable, String username);
 
 }

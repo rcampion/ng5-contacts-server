@@ -178,4 +178,12 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
+
+	@Override
+	public Page<AuthorityDto> findAuthorities(Pageable pageable, String userName) {
+
+		Page<AuthorityDto> authority = authorityRepository.findByUserName(pageable, userName);
+		
+		return authority;
+	}
 }
