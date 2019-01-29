@@ -44,4 +44,6 @@ public interface UserService {
 
 	Page<AuthorityDto> findAuthorities(Pageable pageable, String username);
 
+	AuthorityDto getAuthority(int id);
+
 }

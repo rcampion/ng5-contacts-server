@@ -186,4 +186,13 @@ public class UserServiceImpl implements UserService {
 		
 		return authority;
 	}
+
+	@Override
+	public AuthorityDto getAuthority(int id) {
+		Optional<AuthorityDto> authority = authorityRepository.findById(id);
+		if (authority.isPresent())
+			return authority.get();
+		else
+			return null;
+	}
 }

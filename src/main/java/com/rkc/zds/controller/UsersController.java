@@ -146,5 +146,9 @@ public class UsersController {
 		ResponseEntity<Page<AuthorityDto>> response = new ResponseEntity<>(page, HttpStatus.OK);
 		return response;
 	}
-	
+	@RequestMapping(value = "/users/authorities/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AuthorityDto> getAuthority(@PathVariable int id, HttpServletRequest req) {
+		AuthorityDto user = userService.getAuthority(id);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}	
 }
