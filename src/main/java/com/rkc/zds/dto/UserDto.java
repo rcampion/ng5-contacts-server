@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The persistent class for the PCM_USERS database table.
@@ -60,6 +61,8 @@ public class UserDto implements java.io.Serializable  {
     @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "userName", referencedColumnName = "userName")
 	@ElementCollection(targetClass=AuthorityDto.class)
+
+    @JsonProperty("authorities")
 	//private Set<AuthorityDto> authorities = new HashSet<AuthorityDto>(0);
     private List<AuthorityDto> authorities = new ArrayList<AuthorityDto>();
 
@@ -146,11 +149,12 @@ public class UserDto implements java.io.Serializable  {
 		this.authorities= authorityDto;
 	}
 */
-	
+    @JsonIgnore
     public List<AuthorityDto> getAuthorities() {
 		return authorities;
 	}
-
+    
+    @JsonIgnore
 	public void setAuthorities(List<AuthorityDto> authorities) {
 		this.authorities = authorities;
 	}
