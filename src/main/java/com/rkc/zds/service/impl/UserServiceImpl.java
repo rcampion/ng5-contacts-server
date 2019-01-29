@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rkc.zds.config.security.hmac.HmacException;
 import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.repository.UserRepository;
@@ -194,5 +195,13 @@ public class UserServiceImpl implements UserService {
 			return authority.get();
 		else
 			return null;
+	}
+	
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public void updateAuthority(AuthorityDto authority) {
+
+		authorityRepository.saveAndFlush(authority);
+
 	}
 }

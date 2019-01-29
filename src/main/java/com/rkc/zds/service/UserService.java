@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rkc.zds.dto.AuthorityDto;
+import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.error.UserAlreadyExistException;
@@ -45,5 +46,7 @@ public interface UserService {
 	Page<AuthorityDto> findAuthorities(Pageable pageable, String username);
 
 	AuthorityDto getAuthority(int id);
+	
+    public void updateAuthority(AuthorityDto authority);
 
 }

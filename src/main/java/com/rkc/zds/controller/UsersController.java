@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.EMailDto;
 import com.rkc.zds.dto.GroupDto;
 import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.Profile;
@@ -150,5 +151,29 @@ public class UsersController {
 	public ResponseEntity<AuthorityDto> getAuthority(@PathVariable int id, HttpServletRequest req) {
 		AuthorityDto user = userService.getAuthority(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
-	}	
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/users/authority/authority", method = RequestMethod.PUT, consumes = {
+			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })
+	public void updateAuthority(@RequestBody String jsonString) {
+		ObjectMapper mapper = new ObjectMapper();
+
+		AuthorityDto authority = new AuthorityDto();
+		try {
+			authority = mapper.readValue(jsonString, AuthorityDto.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		userService.updateAuthority(authority);
+
+	}
 }
