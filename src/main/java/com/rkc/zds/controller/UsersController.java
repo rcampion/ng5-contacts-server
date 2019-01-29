@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rkc.zds.dto.ContactDto;
 import com.rkc.zds.dto.GroupDto;
+import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.Profile;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.rsql.CustomRsqlVisitor;
@@ -27,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.io.IOException;
@@ -59,7 +61,13 @@ public class UsersController {
 		userService.deleteUser(id);
 		return Integer.toString(id);
 	}
+	
+    @RequestMapping(value = "/users/password",method = RequestMethod.POST)
+    public UserDto changePassword(@RequestBody LoginDto loginDTO, HttpServletRequest request, HttpServletResponse response) throws Exception{
 
+    	return userService.changePassword(loginDTO, request, response);
+    }
+    
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = {
 			"application/json;charset=UTF-8" }, produces = { "application/json;charset=UTF-8" })

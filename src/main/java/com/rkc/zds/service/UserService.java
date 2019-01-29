@@ -2,12 +2,16 @@ package com.rkc.zds.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.error.UserAlreadyExistException;
 
@@ -35,5 +39,7 @@ public interface UserService {
 	UserDto registerNewUserAccount(UserDto accountDto) throws UserAlreadyExistException;
 
 	Page<UserDto> searchUsers(Pageable pageable, Specification<UserDto> spec);
+
+	UserDto changePassword(LoginDto loginDTO, HttpServletRequest request, HttpServletResponse response);
 
 }

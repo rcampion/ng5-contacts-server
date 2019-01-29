@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.rkc.zds.error.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rkc.zds.config.security.hmac.HmacException;
 import com.rkc.zds.dto.AuthorityDto;
 import com.rkc.zds.dto.ContactDto;
+import com.rkc.zds.dto.LoginDto;
 import com.rkc.zds.dto.UserDto;
 import com.rkc.zds.repository.UserRepository;
 import com.rkc.zds.repository.AuthorityRepository;
@@ -161,5 +166,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Page<UserDto> searchUsers(Pageable pageable, Specification<UserDto> spec) {
 		return userRepository.findAll(spec, pageable);
+	}
+	
+	public UserDto changePassword(LoginDto loginDTO, HttpServletRequest request, HttpServletResponse response) {
+		UserDto user = userRepository.findByUserName(loginDTO.getLogin());
+		
+		user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+		user.setEnabled(1);
+		
+		user = userRepository.save(user);
+		
+		return user;
 	}
 }

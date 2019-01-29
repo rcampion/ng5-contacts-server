@@ -45,7 +45,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	private User buildUserForAuthentication(UserDto user, List<GrantedAuthority> authorities) {
 		return new User(user.getUserName(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
 	}
-
+/*
 	private List<GrantedAuthority> buildUserAuthority(Set<AuthorityDto> authorityDtos) {
 
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
@@ -59,5 +59,19 @@ public class MyUserDetailsService implements UserDetailsService {
 
 		return result;
 	}
+*/
+	
+	private List<GrantedAuthority> buildUserAuthority(List<AuthorityDto> authorityDtos) {
 
+		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
+
+		// Build user's authorities
+		for (AuthorityDto authorityDto : authorityDtos) {
+			setAuths.add(new SimpleGrantedAuthority(authorityDto.getAuthority()));
+		}
+
+		List<GrantedAuthority> result = new ArrayList<GrantedAuthority>(setAuths);
+
+		return result;
+	}
 }

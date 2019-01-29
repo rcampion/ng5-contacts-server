@@ -60,9 +60,10 @@ public class UserDto implements java.io.Serializable  {
     @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "userName", referencedColumnName = "userName")
 	@ElementCollection(targetClass=AuthorityDto.class)
-	private Set<AuthorityDto> authorities = new HashSet<AuthorityDto>(0);
+	//private Set<AuthorityDto> authorities = new HashSet<AuthorityDto>(0);
+    private List<AuthorityDto> authorities = new ArrayList<AuthorityDto>();
 
-	@JsonIgnore
+    @JsonIgnore
 	@Column(name="PUBLIC_SECRET")
     private String publicSecret;
 
@@ -136,7 +137,7 @@ public class UserDto implements java.io.Serializable  {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
+/*	
 	public Set<AuthorityDto> getAuthorities() {
 		return this.authorities;
 	}
@@ -144,13 +145,23 @@ public class UserDto implements java.io.Serializable  {
 	public void setAuthorities(Set<AuthorityDto> authorityDto) {
 		this.authorities= authorityDto;
 	}
+*/
+	
+    public List<AuthorityDto> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<AuthorityDto> authorities) {
+		this.authorities = authorities;
+	}
 
 	public boolean isEnabled() {
 		if(this.enabled == 1)
 			return true;
 		return false;
 	}
-    public String getPublicSecret() {
+	
+	public String getPublicSecret() {
 		return publicSecret;
 	}
 
@@ -173,7 +184,7 @@ public class UserDto implements java.io.Serializable  {
 	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
-
+/*
     public List<String> getAuthoritiesList() {
     	
     	List<String> authoritiesList = new ArrayList<String>();
@@ -209,7 +220,7 @@ public class UserDto implements java.io.Serializable  {
 		
 		this.authorities = set;
 	}
-
+*/
 	@Override
 	public int hashCode() {
 	    int hash = 3;
