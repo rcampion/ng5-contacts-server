@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +42,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api")
 public class UsersController {
+	
     @Autowired
     private UserService userService;
+    
+	@Autowired
+	private PasswordEncoder passwordEncoder;
     
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Page<UserDto>> findAllUsers(Pageable pageable, HttpServletRequest req) {
@@ -92,9 +97,17 @@ public class UsersController {
 		}
 		
         //hack
-        userDTO.setLogin(userDTO.getUserName());
-        
+        userDTO.setLogin(userDTO.getUserName());        
+		
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userDTO.setEnabled(1);
 		userService.saveUser(userDTO);
+
+		AuthorityDto role = new AuthorityDto();
+		role.setUserName(userDTO.getLogin());
+		role.setAuthority("ROLE_USER");
+
+		userService.saveAuthority(role);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -118,7 +131,9 @@ public class UsersController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setEnabled(1);
 		userService.updateUser(user);
 
 	}

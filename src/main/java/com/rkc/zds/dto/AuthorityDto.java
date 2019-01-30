@@ -96,23 +96,15 @@ public class AuthorityDto implements Serializable {
 		this.user = user;
 		this.authority = role;
 	}
-/*	
+	
 	public Integer getId() {
 		return id;
 	}
-*/
-	public String getId() {
-		return Integer.toString(id);
-	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setId(String id) {
-		this.id = Integer.parseInt(id);
-	}
-	
 	public String getUserName() {
 		return this.userName;
 	}

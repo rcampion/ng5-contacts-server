@@ -47,6 +47,8 @@ public interface UserService {
 
 	AuthorityDto getAuthority(int id);
 	
+    public void saveAuthority(AuthorityDto role);
+    
     public void updateAuthority(AuthorityDto authority);
 
 }
