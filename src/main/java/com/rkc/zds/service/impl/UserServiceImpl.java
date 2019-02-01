@@ -196,4 +196,11 @@ public class UserServiceImpl implements UserService {
 		authorityRepository.save(role);
 		
 	}
+
+	@Override
+	public void deleteAuthority(int id) {
+		
+		authorityRepository.deleteById(id);
+		
+	}
 }

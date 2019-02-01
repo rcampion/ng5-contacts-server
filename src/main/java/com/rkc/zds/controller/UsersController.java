@@ -191,4 +191,11 @@ public class UsersController {
 		userService.updateAuthority(authority);
 
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@RequestMapping(value = "/users/authority/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public String deleteAuthority(@PathVariable int id) {
+		userService.deleteAuthority(id);
+		return Integer.toString(id);
+	}
 }

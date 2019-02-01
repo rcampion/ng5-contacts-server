@@ -51,4 +51,6 @@ public interface UserService {
     
     public void updateAuthority(AuthorityDto authority);
 
+	void deleteAuthority(int id);
+
 }
